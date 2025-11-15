@@ -20,7 +20,10 @@ $(BUILD_DIR)/$(TOP).asc: $(BUILD_DIR)/$(TOP).json $(PCF)
 $(BUILD_DIR)/$(TOP).bin: $(BUILD_DIR)/$(TOP).asc
 	icepack $< $@
 
+time: $(BUILD_DIR)/$(TOP).asc
+	icetime -tmd $(DEVICE) $<
+
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: build upload clean
+.PHONY: build clean
