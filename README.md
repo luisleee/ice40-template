@@ -14,3 +14,6 @@ This is a template project for Lattice iCE40 development.
 
 ### build
 `make build`
+
+### time
+`make time`

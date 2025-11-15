@@ -26,4 +26,4 @@ time: $(BUILD_DIR)/$(TOP).asc
 clean:
 	rm -rf $(BUILD_DIR)
 
-.PHONY: build clean
+.PHONY: build time clean
