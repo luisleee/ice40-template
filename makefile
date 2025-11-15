@@ -5,21 +5,22 @@ TOP = leds
 SOURCES = src/leds.v
 PCF = constraints/icesugar.pcf
 
-build: $(TOP).bin
+BUILD_DIR = build
 
-$(TOP).json: $(SOURCES)
+$(shell mkdir -p $(BUILD_DIR))
+
+build: $(BUILD_DIR)/$(TOP).bin
+
+$(BUILD_DIR)/$(TOP).json: $(SOURCES)
 	yosys -p "synth_ice40 -top $(TOP) -json $@" $(SOURCES)
 
-$(TOP).asc: $(TOP).json $(PCF)
-	nextpnr-ice40 --$(DEVICE) --package $(PACKAGE) --json $(TOP).json --pcf $(PCF) --asc $@
+$(BUILD_DIR)/$(TOP).asc: $(BUILD_DIR)/$(TOP).json $(PCF)
+	nextpnr-ice40 --$(DEVICE) --package $(PACKAGE) --json $< --pcf $(PCF) --asc $@
 
-$(TOP).bin: $(TOP).asc
+$(BUILD_DIR)/$(TOP).bin: $(BUILD_DIR)/$(TOP).asc
 	icepack $< $@
 
-upload: $(TOP).bin
-	iceprog $<
-
 clean:
-	rm -f *.json *.asc *.bin
+	rm -rf $(BUILD_DIR)
 
 .PHONY: build upload clean
